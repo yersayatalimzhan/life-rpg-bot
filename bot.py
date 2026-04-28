@@ -570,12 +570,30 @@ def generate_card(user: dict) -> bytes | None:
         draw.line([(0, i), (W, i)], fill=(r, g, b))
     draw.rectangle([10, 10, W-10, H-10], outline=(80, 60, 180), width=2)
     draw.rectangle([14, 14, W-14, H-14], outline=(40, 30, 90), width=1)
-   try:
-        fb = ImageFont.truetype("/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf", 26)
-        fm = ImageFont.truetype("/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf", 18)
-        fs = ImageFont.truetype("/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf", 14)
-    except Exception:
-        fb = fm = fs = ImageFont.load_default()
+    font_paths_bold = [
+        "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf",
+        "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
+        "/usr/share/fonts/truetype/freefont/FreeSansBold.ttf",
+    ]
+    font_paths_regular = [
+        "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf",
+        "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+        "/usr/share/fonts/truetype/freefont/FreeSans.ttf",
+    ]
+    fb = fm = fs = ImageFont.load_default()
+    for path in font_paths_bold:
+        try:
+            fb = ImageFont.truetype(path, 26)
+            fm = ImageFont.truetype(path, 18)
+            break
+        except Exception:
+            continue
+    for path in font_paths_regular:
+        try:
+            fs = ImageFont.truetype(path, 14)
+            break
+        except Exception:
+            continue
 
     rank = get_rank(user["level"])
     title = get_title(user)
