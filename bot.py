@@ -571,11 +571,11 @@ def generate_card(user: dict) -> bytes | None:
     draw.rectangle([10, 10, W-10, H-10], outline=(80, 60, 180), width=2)
     draw.rectangle([14, 14, W-14, H-14], outline=(40, 30, 90), width=1)
     try:
-        fb = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 26)
-        fm = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 18)
-        fs = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 14)
-    except Exception:
-        fb = fm = fs = ImageFont.load_default()
+    fb = ImageFont.truetype("/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf", 26)
+    fm = ImageFont.truetype("/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf", 18)
+    fs = ImageFont.truetype("/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf", 14)
+except Exception:
+    fb = fm = fs = ImageFont.load_default()
 
     rank = get_rank(user["level"])
     title = get_title(user)
