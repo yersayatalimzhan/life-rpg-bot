@@ -581,19 +581,12 @@ def generate_card(user: dict) -> bytes | None:
         "/usr/share/fonts/truetype/freefont/FreeSans.ttf",
     ]
     fb = fm = fs = ImageFont.load_default()
-    for path in font_paths_bold:
-        try:
-            fb = ImageFont.truetype(path, 26)
-            fm = ImageFont.truetype(path, 18)
-            break
-        except Exception:
-            continue
-    for path in font_paths_regular:
-        try:
-            fs = ImageFont.truetype(path, 14)
-            break
-        except Exception:
-            continue
+    try:
+        fb = ImageFont.truetype("Roboto-Bold.ttf", 26)
+        fm = ImageFont.truetype("Roboto-Bold.ttf", 18)
+        fs = ImageFont.truetype("Roboto-Regular.ttf", 14)
+    except Exception:
+        pass
 
     rank = get_rank(user["level"])
     title = get_title(user)
