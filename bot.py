@@ -620,7 +620,7 @@ def generate_card(user: dict) -> bytes | None:
         "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
         "/usr/share/fonts/truetype/freefont/FreeSans.ttf",
     ]
-fb = fm = fs = ImageFont.load_default()
+    fb = fm = fs = ImageFont.load_default()
     try:
         fb = ImageFont.truetype("Roboto-Bold.ttf", 26)
         fm = ImageFont.truetype("Roboto-Bold.ttf", 18)
