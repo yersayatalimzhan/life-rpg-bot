@@ -6,7 +6,7 @@ import io
 from datetime import datetime, date
 from aiogram import Bot, Dispatcher, types, F
 from aiogram.filters import Command
-from aiogram.types import (
+from aiogram.types import (            
     ReplyKeyboardMarkup, KeyboardButton,
     InlineKeyboardMarkup, InlineKeyboardButton
 )
@@ -741,6 +741,12 @@ async def set_name(msg: types.Message):
         await db.commit()
     await msg.answer(f"✅ Имя изменено на *{name}*", parse_mode="Markdown")
 
+@dp.message(Command("fonts"))
+async def check_fonts(msg: types.Message):
+    import subprocess
+    result = subprocess.run(["fc-list"], capture_output=True, text=True)
+    fonts = result.stdout[:3000]
+    await msg.answer(f"Шрифты:\n{fonts}")
 @dp.message(Command("today"))
 async def show_today(msg: types.Message):
     done = await get_today_quests(msg.from_user.id)
