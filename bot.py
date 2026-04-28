@@ -6,7 +6,7 @@ import io
 from datetime import datetime, date
 from aiogram import Bot, Dispatcher, types, F
 from aiogram.filters import Command
-from aiogram.types import (            
+from aiogram.types import (
     ReplyKeyboardMarkup, KeyboardButton,
     InlineKeyboardMarkup, InlineKeyboardButton
 )
@@ -107,7 +107,7 @@ ACHIEVEMENTS = [
     ("⚡ Ловкость 10",    "agility_10",   lambda u: u["agility"] >= 10),
     ("💰 Финансы 10",     "finance_10",   lambda u: u["finance"] >= 10),
     ("❤️ Здоровье 10",    "health_10",    lambda u: u["health"] >= 10),
-    ("🪙 Богач",          "coins_100",    lambda u: u.get("coins",0) >= 100),
+    ("🟡 Богач",          "coins_100",    lambda u: u.get("coins",0) >= 100),
     ("🛒 Покупатель",     "first_buy",    lambda u: u.get("total_buys",0) >= 1),
 ]
 
@@ -125,7 +125,7 @@ RANDOM_EVENTS = [
     {"name": "⚡ Энергетическая буря!",    "type": "bonus_xp",   "value": 15, "msg": "+15 XP всем!"},
     {"name": "🌑 Тёмная неделя...",        "type": "penalty_xp", "value": 10, "msg": "-10 XP всем..."},
     {"name": "🌟 Благословение богов!",    "type": "bonus_xp",   "value": 30, "msg": "+30 XP всем!"},
-    {"name": "🪙 Дождь монет!",            "type": "bonus_coins","value": 20, "msg": "+20 монет всем!"},
+    {"name": "🟡 Дождь монет!",            "type": "bonus_coins","value": 20, "msg": "+20 монет всем!"},
 ]
 
 LEVEL_CHALLENGES = {
@@ -139,7 +139,7 @@ LEVEL_CHALLENGES = {
 ITEMS = {
     "xp_boost":    {"name": "⚡ Буст XP",             "desc": "Даёт +20 XP сразу",           "price": 30,  "type": "boost"},
     "heal_streak": {"name": "🔥 Восстановление стрика","desc": "Возвращает стрик до 3",       "price": 25,  "type": "streak"},
-    "coins_pack":  {"name": "🪙 Пачка монет",          "desc": "Даёт +15 монет",              "price": 20,  "type": "coins"},
+    "coins_pack":  {"name": "🟡 Пачка монет",          "desc": "Даёт +15 монет",              "price": 20,  "type": "coins"},
     "xp_big":      {"name": "💎 Большой буст XP",      "desc": "Даёт +50 XP сразу",          "price": 70,  "type": "boost_big"},
     "stat_boost":  {"name": "📈 Буст характеристик",   "desc": "+1 ко всем характеристикам", "price": 80,  "type": "stat_all"},
 }
@@ -217,11 +217,19 @@ async def init_db():
         """)
         await db.execute("""
             CREATE TABLE IF NOT EXISTS custom_quests (
-                id      INTEGER PRIMARY KEY AUTOINCREMENT,
-                user_id INTEGER,
-                name    TEXT,
-                done_today INTEGER DEFAULT 0,
+                id         INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id    INTEGER,
+                name       TEXT,
+                difficulty TEXT DEFAULT 'easy',
                 last_done  TEXT DEFAULT ''
+            )
+        """)
+        await db.execute("""
+            CREATE TABLE IF NOT EXISTS quest_renames (
+                user_id  INTEGER,
+                quest_id TEXT,
+                name     TEXT,
+                PRIMARY KEY (user_id, quest_id)
             )
         """)
         # Миграции
@@ -233,6 +241,7 @@ async def init_db():
             "ALTER TABLE users ADD COLUMN week_start TEXT DEFAULT ''",
             "ALTER TABLE users ADD COLUMN coins INTEGER DEFAULT 0",
             "ALTER TABLE users ADD COLUMN total_buys INTEGER DEFAULT 0",
+            "ALTER TABLE custom_quests ADD COLUMN difficulty TEXT DEFAULT 'easy'",
         ]
         for m in migrations:
             try:
@@ -422,7 +431,38 @@ async def get_daily_shop() -> list:
         return await get_daily_shop()
     return [r[0] for r in rows]
 
+# ── Переименование квестов ────────────────
+
+async def get_quest_renames(user_id: int) -> dict:
+    async with aiosqlite.connect(DB_PATH) as db:
+        async with db.execute(
+            "SELECT quest_id, name FROM quest_renames WHERE user_id=?", (user_id,)
+        ) as cur:
+            rows = await cur.fetchall()
+    return {r[0]: r[1] for r in rows}
+
+async def set_quest_rename(user_id: int, quest_id: str, name: str):
+    async with aiosqlite.connect(DB_PATH) as db:
+        await db.execute("""
+            INSERT OR REPLACE INTO quest_renames VALUES (?,?,?)
+        """, (user_id, quest_id, name))
+        await db.commit()
+
+async def del_quest_rename(user_id: int, quest_id: str):
+    async with aiosqlite.connect(DB_PATH) as db:
+        await db.execute(
+            "DELETE FROM quest_renames WHERE user_id=? AND quest_id=?",
+            (user_id, quest_id)
+        )
+        await db.commit()
+
 # ── Свои квесты ───────────────────────────
+
+DIFFICULTY = {
+    "easy":   {"name": "🟢 Лёгкая",  "xp": 2,  "coins": 1},
+    "medium": {"name": "🟡 Средняя", "xp": 5,  "coins": 2},
+    "hard":   {"name": "🔴 Сложная", "xp": 10, "coins": 5},
+}
 
 async def get_custom_quests(user_id: int) -> list:
     async with aiosqlite.connect(DB_PATH) as db:
@@ -581,12 +621,19 @@ def generate_card(user: dict) -> bytes | None:
         "/usr/share/fonts/truetype/freefont/FreeSans.ttf",
     ]
     fb = fm = fs = ImageFont.load_default()
-    try:
-        fb = ImageFont.truetype("Roboto-Bold.ttf", 26)
-        fm = ImageFont.truetype("Roboto-Bold.ttf", 18)
-        fs = ImageFont.truetype("Roboto-Regular.ttf", 14)
-    except Exception:
-        pass
+    for path in font_paths_bold:
+        try:
+            fb = ImageFont.truetype(path, 26)
+            fm = ImageFont.truetype(path, 18)
+            break
+        except Exception:
+            continue
+    for path in font_paths_regular:
+        try:
+            fs = ImageFont.truetype(path, 14)
+            break
+        except Exception:
+            continue
 
     rank = get_rank(user["level"])
     title = get_title(user)
@@ -622,7 +669,7 @@ def generate_card(user: dict) -> bytes | None:
         draw.rectangle([x, y+42, x+fw,  y+50], fill=scolor)
     draw.text((30,   H-42), f"Стрик: {user['streak']} дней",        font=fs, fill=(200,180,255))
     draw.text((230,  H-42), f"Квестов: {user.get('total_quests',0)}", font=fs, fill=(180,180,220))
-    draw.text((W-160,H-42), f"🪙 {user.get('coins',0)} монет",       font=fs, fill=(255,220,100))
+    draw.text((W-160,H-42), f"🟡 {user.get('coins',0)} монет",       font=fs, fill=(255,220,100))
     buf = io.BytesIO()
     img.save(buf, format="PNG")
     return buf.getvalue()
@@ -734,12 +781,6 @@ async def set_name(msg: types.Message):
         await db.commit()
     await msg.answer(f"✅ Имя изменено на *{name}*", parse_mode="Markdown")
 
-@dp.message(Command("fonts"))
-async def check_fonts(msg: types.Message):
-    import subprocess
-    result = subprocess.run(["fc-list"], capture_output=True, text=True)
-    fonts = result.stdout[:3000]
-    await msg.answer(f"Шрифты:\n{fonts}")
 @dp.message(Command("today"))
 async def show_today(msg: types.Message):
     done = await get_today_quests(msg.from_user.id)
@@ -785,7 +826,7 @@ async def show_stats(msg: types.Message):
         f"⚡ Ловкость: {user['agility']}\n"
         f"💰 Финансы: {user['finance']}\n"
         f"❤️ Здоровье: {user['health']}\n\n"
-        f"🪙 Монеты: {user.get('coins',0)}\n"
+        f"🟡 Монеты: {user.get('coins',0)}\n"
         f"{streak_icon} Стрик: {user['streak']} дней\n"
         f"🎯 Квестов всего: {user.get('total_quests',0)}",
         parse_mode="Markdown"
@@ -877,7 +918,7 @@ async def complete_quest(call: types.CallbackQuery):
                     user["xp"] += boss["xp"]
                     user["coins"] = user.get("coins",0) + 50
                     await save_user(user)
-                    boss_msg = f"\n\n⚔️ *БОСС ПОВЕРЖЕН!* +{boss['xp']} XP +50🪙 🏆"
+                    boss_msg = f"\n\n⚔️ *БОСС ПОВЕРЖЕН!* +{boss['xp']} XP +50🟡 🏆"
                 else:
                     boss_msg = f"\n⚔️ Босс: {new_count}/{boss['target']}"
 
@@ -887,7 +928,7 @@ async def complete_quest(call: types.CallbackQuery):
     response = (
         f"{q['emoji']} *Квест выполнен!*\n\n"
         f"{streak_msg}"
-        f"⚡ +{earned} XP  🪙 +{coins_earned} монет"
+        f"⚡ +{earned} XP  🟡 +{coins_earned} монет"
     )
     if q["stat_val"] > 0:
         response += f"  {STAT_NAMES[q['stat']]} +{q['stat_val']}"
@@ -910,7 +951,7 @@ async def complete_custom_quest(call: types.CallbackQuery):
     response = (
         f"✏️ *Квест выполнен!*\n\n"
         f"{streak_msg}"
-        f"⚡ +{earned} XP  🪙 +{coins_earned} монет"
+        f"⚡ +{earned} XP  🟡 +{coins_earned} монет"
         + level_up_msg + ach_msg
     )
     await call.answer()
@@ -981,7 +1022,7 @@ async def show_boss(msg: types.Message):
     await msg.answer(
         f"⚔️ *{boss['name']}*\n\n"
         f"📋 {boss['desc']}\n"
-        f"🏆 Награда: +{boss['xp']} XP + 50🪙\n\n"
+        f"🏆 Награда: +{boss['xp']} XP + 50🟡\n\n"
         f"Прогресс: [{bar}] {status}",
         parse_mode="Markdown"
     )
@@ -992,15 +1033,15 @@ async def show_boss(msg: types.Message):
 async def shop(msg: types.Message):
     user = await get_user(msg.from_user.id)
     shop_items = await get_daily_shop()
-    text = f"🛒 *Магазин* (обновляется каждый день)\n\n🪙 У тебя: {user.get('coins',0)} монет\n\n"
+    text = f"🛒 *Магазин* (обновляется каждый день)\n\n🟡 У тебя: {user.get('coins',0)} монет\n\n"
     buttons = []
     for item_id in shop_items:
         item = ITEMS.get(item_id)
         if not item:
             continue
         can_buy = user.get("coins",0) >= item["price"]
-        text += f"{item['name']}\n_{item['desc']}_ — {item['price']}🪙\n\n"
-        label = f"Купить {item['name']} ({item['price']}🪙)" if can_buy else f"❌ {item['name']} ({item['price']}🪙)"
+        text += f"{item['name']}\n_{item['desc']}_ — {item['price']}🟡\n\n"
+        label = f"Купить {item['name']} ({item['price']}🟡)" if can_buy else f"❌ {item['name']} ({item['price']}🟡)"
         buttons.append([InlineKeyboardButton(text=label, callback_data=f"buy_{item_id}")])
     await msg.answer(text, parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(inline_keyboard=buttons))
 
@@ -1014,7 +1055,7 @@ async def buy_item(call: types.CallbackQuery):
     user = await get_user(call.from_user.id)
     if user.get("coins",0) < item["price"]:
         need = item["price"] - user.get("coins",0)
-        await call.answer(f"❌ Не хватает {need}🪙", show_alert=True)
+        await call.answer(f"❌ Не хватает {need}🟡", show_alert=True)
         return
     user["coins"] -= item["price"]
     user["total_buys"] = user.get("total_buys",0) + 1
@@ -1025,7 +1066,7 @@ async def buy_item(call: types.CallbackQuery):
     await call.answer("✅ Куплено!", show_alert=True)
     await call.message.answer(
         f"🎉 Куплено: *{item['name']}*\n"
-        f"🪙 Осталось монет: {user.get('coins',0)}\n"
+        f"🟡 Осталось монет: {user.get('coins',0)}\n"
         f"Используй в 🎒 Инвентарь{ach_msg}",
         parse_mode="Markdown"
     )
@@ -1072,7 +1113,7 @@ async def use_item(call: types.CallbackQuery):
         result_msg = "💎 +50 XP получено!"
     elif item["type"] == "coins":
         user["coins"] = user.get("coins",0) + 15
-        result_msg = "🪙 +15 монет получено!"
+        result_msg = "🟡 +15 монет получено!"
     elif item["type"] == "stat_all":
         for s in ["intel","strength","agility","finance","health"]:
             user[s] += 1
@@ -1182,7 +1223,7 @@ async def send_weekly_boss():
         try:
             await bot.send_message(uid,
                 f"⚔️ *Новый босс недели!*\n\n*{boss['name']}*\n{boss['desc']}\n\n"
-                f"🏆 Награда: +{boss['xp']} XP + 50🪙\n\nНажми ⚔️ Босс недели!",
+                f"🏆 Награда: +{boss['xp']} XP + 50🟡\n\nНажми ⚔️ Босс недели!",
                 parse_mode="Markdown")
         except Exception:
             pass
