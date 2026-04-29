@@ -1149,11 +1149,40 @@ async def show_settings(msg: types.Message):
     buttons = [
         [InlineKeyboardButton(text="✏️ Мои квесты",         callback_data="settings_myquests")],
         [InlineKeyboardButton(text="🔄 Переименовать квест", callback_data="settings_rename")],
+        [InlineKeyboardButton(text="📖 Инструкция",          callback_data="settings_help")],
     ]
     await msg.answer(
         "⚙️ *Настройки*\n\nВыбери что хочешь настроить:",
         parse_mode="Markdown",
         reply_markup=InlineKeyboardMarkup(inline_keyboard=buttons)
+    )
+
+@dp.callback_query(F.data == "settings_help")
+async def settings_help(call: types.CallbackQuery):
+    await call.message.edit_text(
+        "📖 *Инструкция*\n\n"
+        "*Команды:*\n"
+        "/start — начать игру\n"
+        "/setname Имя — изменить имя\n"
+        "/today — что выполнил сегодня\n"
+        "/addquest Название — добавить квест\n\n"
+        "*Бонусы:*\n"
+        "🔥 Стрик 3+ дней = ×1.5 XP\n"
+        "🔥 Стрик 7+ дней = ×2 XP\n"
+        "🎉 Выходные = ×1.5 XP\n"
+        "😔 Пропуск дня = -5 XP\n\n"
+        "*Ранги:*\n"
+        "F → E(3) → D(6) → C(10) → B(15) → A(21) → S(28)\n\n"
+        "*Челленджи:*\n"
+        "Ур.5 → 🍫 Шоколадка\n"
+        "Ур.10 → 🎬 Кино\n"
+        "Ур.15 → 🍕 Любимая еда\n"
+        "Ур.20 → 👟 Экипировка\n"
+        "Ур.28 → 🎉 Большая награда",
+        parse_mode="Markdown",
+        reply_markup=InlineKeyboardMarkup(inline_keyboard=[
+            [InlineKeyboardButton(text="◀️ Назад", callback_data="settings_back")]
+        ])
     )
 
 # ── Мои квесты ────────────────────────────
