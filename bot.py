@@ -46,7 +46,7 @@ QUESTS = {
     "agility_swim":    {"name": "🏊 Плавание",                "xp": 10, "stat": "agility",  "stat_val": 2, "emoji": "🏊"},
     "agility_bike":    {"name": "🚴 Велосипед",               "xp": 8,  "stat": "agility",  "stat_val": 1, "emoji": "🚴"},
     "finance_expenses":{"name": "📊 Посчитал расходы",        "xp": 5,  "stat": "finance",  "stat_val": 1, "emoji": "📊"},
-    "finance_content": {"name": "📤 Публикация контента",     "xp": 5,  "stat": "finance",  "stat_val": 1, "emoji": "📤"},
+    "finance_content": {"name": "📤 Инвестировал",     "xp": 5,  "stat": "finance",  "stat_val": 1, "emoji": "📤"},
     "finance_earn":    {"name": "💵 Доп. заработок",          "xp": 15, "stat": "finance",  "stat_val": 2, "emoji": "💵"},
     "finance_invest":  {"name": "📈 Читал про инвестиции",    "xp": 5,  "stat": "finance",  "stat_val": 1, "emoji": "📈"},
     "finance_plan":    {"name": "🗓 Финансовый план",         "xp": 8,  "stat": "finance",  "stat_val": 1, "emoji": "🗓"},
