@@ -31,7 +31,7 @@ DB_PATH = "game.db"
 QUESTS = {
     "intel_read10":    {"name": "📖 Читал 10 стр.",           "xp": 5,  "stat": "intel",    "stat_val": 1, "emoji": "📖"},
     "intel_course":    {"name": "📚 Урок курса",               "xp": 10, "stat": "intel",    "stat_val": 1, "emoji": "📚"},
-    "intel_english":   {"name": "🇬🇧 Урок английского",       "xp": 8,  "stat": "intel",    "stat_val": 1, "emoji": "🇬🇧"},
+    "intel_english":   {"name": "🇬🇧 Занятие по языкам",       "xp": 8,  "stat": "intel",    "stat_val": 1, "emoji": "🇬🇧"},
     "intel_video":     {"name": "🎥 Обучающее видео",          "xp": 2,  "stat": "intel",    "stat_val": 1, "emoji": "🎥"},
     "intel_podcast":   {"name": "🎙 Образовательный подкаст",  "xp": 3,  "stat": "intel",    "stat_val": 0, "emoji": "🎙"},
     "intel_notes":     {"name": "✍️ Конспект / заметки",      "xp": 5,  "stat": "intel",    "stat_val": 1, "emoji": "✍️"},
