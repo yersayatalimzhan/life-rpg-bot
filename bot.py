@@ -37,7 +37,7 @@ QUESTS = {
     "intel_notes":     {"name": "✍️ Конспект / заметки",      "xp": 5,  "stat": "intel",    "stat_val": 1, "emoji": "✍️"},
     "strength_gym":    {"name": "🏋️ Тренировка в зале",      "xp": 15, "stat": "strength", "stat_val": 2, "emoji": "🏋️"},
     "strength_home":   {"name": "🤸 Домашняя тренировка",     "xp": 10, "stat": "strength", "stat_val": 1, "emoji": "🤸"},
-    "strength_box":    {"name": "🥊 Бокс",                    "xp": 15, "stat": "strength", "stat_val": 2, "emoji": "🥊"},
+    "strength_box":    {"name": "🥊 Единоборства",           "xp": 15, "stat": "strength", "stat_val": 2, "emoji": "🥊"},
     "strength_exp":    {"name": "💪 Эспандер",                "xp": 2,  "stat": "strength", "stat_val": 0, "emoji": "💪"},
     "strength_push":   {"name": "⬆️ Отжимания 30+",           "xp": 5,  "stat": "strength", "stat_val": 1, "emoji": "⬆️"},
     "agility_run":     {"name": "🏃 Пробежка",                "xp": 5,  "stat": "agility",  "stat_val": 1, "emoji": "🏃"},
@@ -107,7 +107,7 @@ ACHIEVEMENTS = [
     ("⚡ Ловкость 10",    "agility_10",   lambda u: u["agility"] >= 10),
     ("💰 Финансы 10",     "finance_10",   lambda u: u["finance"] >= 10),
     ("❤️ Здоровье 10",    "health_10",    lambda u: u["health"] >= 10),
-    ("🟡 Богач",          "coins_100",    lambda u: u.get("coins",0) >= 100),
+    ("💛 Богач",          "coins_100",    lambda u: u.get("coins",0) >= 100),
     ("🛒 Покупатель",     "first_buy",    lambda u: u.get("total_buys",0) >= 1),
 ]
 
@@ -121,27 +121,33 @@ WEEKLY_BOSSES = [
 ]
 
 RANDOM_EVENTS = [
-    {"name": "📜 Найден свиток мудрости!", "type": "bonus_xp",   "value": 20, "msg": "+20 XP всем!"},
-    {"name": "⚡ Энергетическая буря!",    "type": "bonus_xp",   "value": 15, "msg": "+15 XP всем!"},
-    {"name": "🌑 Тёмная неделя...",        "type": "penalty_xp", "value": 10, "msg": "-10 XP всем..."},
-    {"name": "🌟 Благословение богов!",    "type": "bonus_xp",   "value": 30, "msg": "+30 XP всем!"},
-    {"name": "🟡 Дождь монет!",            "type": "bonus_coins","value": 20, "msg": "+20 монет всем!"},
+    {"name": "📜 Найден свиток мудрости!", "type": "bonus_xp",    "value": 20, "msg": "+20 XP всем!"},
+    {"name": "⚡ Энергетическая буря!",    "type": "bonus_xp",    "value": 15, "msg": "+15 XP всем!"},
+    {"name": "🌑 Тёмная неделя...",        "type": "penalty_xp",  "value": 10, "msg": "-10 XP всем..."},
+    {"name": "🌟 Благословение богов!",    "type": "bonus_xp",    "value": 30, "msg": "+30 XP всем!"},
+    {"name": "💛 Дождь монет!",            "type": "bonus_coins", "value": 20, "msg": "+20 монет всем!"},
 ]
 
 LEVEL_CHALLENGES = {
-    5:  {"name": "100 отжиманий за неделю", "reward": "🍫 Купи себе шоколадку!",      "quest": "strength_push", "target": 4},
-    10: {"name": "Прочитать 50 страниц",    "reward": "🎬 Сходи в кино!",             "quest": "intel_read10",  "target": 5},
-    15: {"name": "Стрик 7 дней подряд",     "reward": "🍕 Закажи любимую еду!",       "quest": None,            "target": 7},
-    20: {"name": "5 тренировок за неделю",  "reward": "👟 Купи новую экипировку!",    "quest": "strength_gym",  "target": 5},
+    5:  {"name": "100 отжиманий за неделю", "reward": "🍫 Купи себе шоколадку!",       "quest": "strength_push", "target": 4},
+    10: {"name": "Прочитать 50 страниц",    "reward": "🎬 Сходи в кино!",              "quest": "intel_read10",  "target": 5},
+    15: {"name": "Стрик 7 дней подряд",     "reward": "🍕 Закажи любимую еду!",        "quest": None,            "target": 7},
+    20: {"name": "5 тренировок за неделю",  "reward": "👟 Купи новую экипировку!",     "quest": "strength_gym",  "target": 5},
     28: {"name": "Достичь ранга S",         "reward": "🎉 Ты заслужил большую личную награду!", "quest": None, "target": 1},
 }
 
 ITEMS = {
-    "xp_boost":    {"name": "⚡ Буст XP",             "desc": "Даёт +20 XP сразу",           "price": 30,  "type": "boost"},
-    "heal_streak": {"name": "🔥 Восстановление стрика","desc": "Возвращает стрик до 3",       "price": 25,  "type": "streak"},
-    "coins_pack":  {"name": "🟡 Пачка монет",          "desc": "Даёт +15 монет",              "price": 20,  "type": "coins"},
-    "xp_big":      {"name": "💎 Большой буст XP",      "desc": "Даёт +50 XP сразу",          "price": 70,  "type": "boost_big"},
-    "stat_boost":  {"name": "📈 Буст характеристик",   "desc": "+1 ко всем характеристикам", "price": 80,  "type": "stat_all"},
+    "xp_boost":    {"name": "⚡ Буст XP",              "desc": "Даёт +20 XP сразу",           "price": 30, "type": "boost"},
+    "heal_streak": {"name": "🔥 Восстановление стрика", "desc": "Возвращает стрик до 3",       "price": 25, "type": "streak"},
+    "coins_pack":  {"name": "💛 Пачка монет",           "desc": "Даёт +15 монет",              "price": 20, "type": "coins"},
+    "xp_big":      {"name": "💎 Большой буст XP",       "desc": "Даёт +50 XP сразу",          "price": 70, "type": "boost_big"},
+    "stat_boost":  {"name": "📈 Буст характеристик",    "desc": "+1 ко всем характеристикам", "price": 80, "type": "stat_all"},
+}
+
+DIFFICULTY = {
+    "easy":   {"name": "🟢 Лёгкая",  "xp": 2,  "coins": 1},
+    "medium": {"name": "🟡 Средняя", "xp": 5,  "coins": 2},
+    "hard":   {"name": "🔴 Сложная", "xp": 10, "coins": 5},
 }
 
 # ══════════════════════════════════════════
@@ -232,7 +238,6 @@ async def init_db():
                 PRIMARY KEY (user_id, quest_id)
             )
         """)
-        # Миграции
         migrations = [
             "ALTER TABLE users ADD COLUMN name TEXT DEFAULT ''",
             "ALTER TABLE users ADD COLUMN class TEXT DEFAULT ''",
@@ -431,38 +436,7 @@ async def get_daily_shop() -> list:
         return await get_daily_shop()
     return [r[0] for r in rows]
 
-# ── Переименование квестов ────────────────
-
-async def get_quest_renames(user_id: int) -> dict:
-    async with aiosqlite.connect(DB_PATH) as db:
-        async with db.execute(
-            "SELECT quest_id, name FROM quest_renames WHERE user_id=?", (user_id,)
-        ) as cur:
-            rows = await cur.fetchall()
-    return {r[0]: r[1] for r in rows}
-
-async def set_quest_rename(user_id: int, quest_id: str, name: str):
-    async with aiosqlite.connect(DB_PATH) as db:
-        await db.execute("""
-            INSERT OR REPLACE INTO quest_renames VALUES (?,?,?)
-        """, (user_id, quest_id, name))
-        await db.commit()
-
-async def del_quest_rename(user_id: int, quest_id: str):
-    async with aiosqlite.connect(DB_PATH) as db:
-        await db.execute(
-            "DELETE FROM quest_renames WHERE user_id=? AND quest_id=?",
-            (user_id, quest_id)
-        )
-        await db.commit()
-
 # ── Свои квесты ───────────────────────────
-
-DIFFICULTY = {
-    "easy":   {"name": "🟢 Лёгкая",  "xp": 2,  "coins": 1},
-    "medium": {"name": "🟡 Средняя", "xp": 5,  "coins": 2},
-    "hard":   {"name": "🔴 Сложная", "xp": 10, "coins": 5},
-}
 
 async def get_custom_quests(user_id: int) -> list:
     async with aiosqlite.connect(DB_PATH) as db:
@@ -473,10 +447,11 @@ async def get_custom_quests(user_id: int) -> list:
             rows = await cur.fetchall()
     return [dict(r) for r in rows]
 
-async def add_custom_quest(user_id: int, name: str):
+async def add_custom_quest(user_id: int, name: str, difficulty: str = "easy"):
     async with aiosqlite.connect(DB_PATH) as db:
         await db.execute(
-            "INSERT INTO custom_quests (user_id, name) VALUES (?,?)", (user_id, name)
+            "INSERT INTO custom_quests (user_id, name, difficulty) VALUES (?,?,?)",
+            (user_id, name, difficulty)
         )
         await db.commit()
 
@@ -494,13 +469,39 @@ async def is_custom_quest_done_today(quest_id: int) -> bool:
             "SELECT last_done FROM custom_quests WHERE id=?", (quest_id,)
         ) as cur:
             row = await cur.fetchone()
-    return row and row[0] == today
+    return row is not None and row[0] == today
 
 async def mark_custom_quest_done(quest_id: int):
     today = date.today().isoformat()
     async with aiosqlite.connect(DB_PATH) as db:
         await db.execute(
             "UPDATE custom_quests SET last_done=? WHERE id=?", (today, quest_id)
+        )
+        await db.commit()
+
+# ── Переименование квестов ────────────────
+
+async def get_quest_renames(user_id: int) -> dict:
+    async with aiosqlite.connect(DB_PATH) as db:
+        async with db.execute(
+            "SELECT quest_id, name FROM quest_renames WHERE user_id=?", (user_id,)
+        ) as cur:
+            rows = await cur.fetchall()
+    return {r[0]: r[1] for r in rows}
+
+async def set_quest_rename(user_id: int, quest_id: str, name: str):
+    async with aiosqlite.connect(DB_PATH) as db:
+        await db.execute(
+            "INSERT OR REPLACE INTO quest_renames VALUES (?,?,?)",
+            (user_id, quest_id, name)
+        )
+        await db.commit()
+
+async def del_quest_rename(user_id: int, quest_id: str):
+    async with aiosqlite.connect(DB_PATH) as db:
+        await db.execute(
+            "DELETE FROM quest_renames WHERE user_id=? AND quest_id=?",
+            (user_id, quest_id)
         )
         await db.commit()
 
@@ -568,19 +569,15 @@ async def award_xp(user: dict, xp: int, stat: str, stat_val: int):
     mult, streak_msg = get_multiplier(user)
     earned = int(xp * mult)
     coins_earned = max(1, earned // 2)
-
     user["xp"] += earned
     user["coins"] = user.get("coins", 0) + coins_earned
     user["total_quests"] = user.get("total_quests", 0) + 1
     user = update_week_xp(user, earned)
-
     if stat in user:
         user[stat] += stat_val
-    # Бонус класса
     cls = user.get("class", "")
     if cls in CLASSES and CLASSES[cls]["bonus_stat"] == stat and stat_val > 0:
         user[stat] += 1
-
     level_up_msg = ""
     while user["xp"] >= xp_for_next_level(user["level"]):
         user["xp"] -= xp_for_next_level(user["level"])
@@ -588,14 +585,42 @@ async def award_xp(user: dict, xp: int, stat: str, stat_val: int):
         level_up_msg += f"\n🎉 *LEVEL UP!* Уровень {user['level']} | Ранг {get_rank(user['level'])}"
         if user["level"] in LEVEL_CHALLENGES:
             ch = LEVEL_CHALLENGES[user["level"]]
-            level_up_msg += f"\n🔓 Челлендж разблокирован: *{ch['name']}*\n🎁 Награда: {ch['reward']}"
-
+            level_up_msg += f"\n🔓 Челлендж: *{ch['name']}*\n🎁 {ch['reward']}"
     await save_user(user)
     return user, streak_msg, level_up_msg, earned, coins_earned
 
 # ══════════════════════════════════════════
 # 🖼 КАРТОЧКА ПЕРСОНАЖА
 # ══════════════════════════════════════════
+
+def load_fonts():
+    bold_paths = [
+        "Roboto-Bold.ttf",
+        "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf",
+        "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
+        "/usr/share/fonts/truetype/freefont/FreeSansBold.ttf",
+    ]
+    regular_paths = [
+        "Roboto-Regular.ttf",
+        "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf",
+        "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+        "/usr/share/fonts/truetype/freefont/FreeSans.ttf",
+    ]
+    fb = fm = fs = ImageFont.load_default()
+    for path in bold_paths:
+        try:
+            fb = ImageFont.truetype(path, 26)
+            fm = ImageFont.truetype(path, 18)
+            break
+        except Exception:
+            continue
+    for path in regular_paths:
+        try:
+            fs = ImageFont.truetype(path, 14)
+            break
+        except Exception:
+            continue
+    return fb, fm, fs
 
 def generate_card(user: dict) -> bytes | None:
     if not PIL_AVAILABLE:
@@ -610,24 +635,7 @@ def generate_card(user: dict) -> bytes | None:
         draw.line([(0, i), (W, i)], fill=(r, g, b))
     draw.rectangle([10, 10, W-10, H-10], outline=(80, 60, 180), width=2)
     draw.rectangle([14, 14, W-14, H-14], outline=(40, 30, 90), width=1)
-    font_paths_bold = [
-        "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf",
-        "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
-        "/usr/share/fonts/truetype/freefont/FreeSansBold.ttf",
-    ]
-    font_paths_regular = [
-        "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf",
-        "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
-        "/usr/share/fonts/truetype/freefont/FreeSans.ttf",
-    ]
-    fb = fm = fs = ImageFont.load_default()
-    try:
-        fb = ImageFont.truetype("Roboto-Bold.ttf", 26)
-        fm = ImageFont.truetype("Roboto-Bold.ttf", 18)
-        fs = ImageFont.truetype("Roboto-Regular.ttf", 14)
-    except Exception:
-        pass
-
+    fb, fm, fs = load_fonts()
     rank = get_rank(user["level"])
     title = get_title(user)
     name = user.get("name") or "Герой"
@@ -636,7 +644,7 @@ def generate_card(user: dict) -> bytes | None:
     draw.text((30, 62), f"{cls_name}  |  {title}", font=fs, fill=(160, 140, 220))
     rank_colors = {"S":(255,215,0),"A":(200,100,255),"B":(100,180,255),
                    "C":(100,220,100),"D":(255,180,50),"E":(180,180,180),"F":(120,120,120)}
-    draw.text((W-120, 28), f"Ур. {user['level']}", font=fm, fill=(200,200,255))
+    draw.text((W-120, 28), f"Ur. {user['level']}", font=fm, fill=(200,200,255))
     draw.text((W-70,  58), f"[{rank}]", font=fb, fill=rank_colors.get(rank,(200,200,200)))
     needed = xp_for_next_level(user["level"])
     xp_pct = user["xp"] / needed
@@ -645,11 +653,11 @@ def generate_card(user: dict) -> bytes | None:
     draw.rectangle([bx, by, bx+bw, by+bh], fill=(40,35,70), outline=(70,60,120))
     draw.rectangle([bx, by, bx+int(bw*xp_pct), by+bh], fill=(100,80,220))
     stats = [
-        ("Интеллект", user["intel"],    (120,180,255)),
-        ("Сила",      user["strength"], (255,120,120)),
-        ("Ловкость",  user["agility"],  (120,255,180)),
-        ("Финансы",   user["finance"],  (255,220,80)),
-        ("Здоровье",  user["health"],   (255,120,200)),
+        ("Intel",    user["intel"],    (120,180,255)),
+        ("Sila",     user["strength"], (255,120,120)),
+        ("Lovkost",  user["agility"],  (120,255,180)),
+        ("Finansy",  user["finance"],  (255,220,80)),
+        ("Zdorovye", user["health"],   (255,120,200)),
     ]
     sx, sy = 30, 152
     for i,(sname,sval,scolor) in enumerate(stats):
@@ -660,9 +668,9 @@ def generate_card(user: dict) -> bytes | None:
         fw = min(int(160*sval/max(sval,50)),160)
         draw.rectangle([x, y+42, x+160, y+50], fill=(40,35,60), outline=(60,55,90))
         draw.rectangle([x, y+42, x+fw,  y+50], fill=scolor)
-    draw.text((30,   H-42), f"Стрик: {user['streak']} дней",        font=fs, fill=(200,180,255))
-    draw.text((230,  H-42), f"Квестов: {user.get('total_quests',0)}", font=fs, fill=(180,180,220))
-    draw.text((W-160,H-42), f"🟡 {user.get('coins',0)} монет",       font=fs, fill=(255,220,100))
+    draw.text((30,   H-42), f"Strik: {user['streak']} d.",          font=fs, fill=(200,180,255))
+    draw.text((220,  H-42), f"Quests: {user.get('total_quests',0)}", font=fs, fill=(180,180,220))
+    draw.text((W-170,H-42), f"Coins: {user.get('coins',0)}",         font=fs, fill=(255,220,100))
     buf = io.BytesIO()
     img.save(buf, format="PNG")
     return buf.getvalue()
@@ -674,10 +682,10 @@ def generate_card(user: dict) -> bytes | None:
 def main_menu_kb():
     return ReplyKeyboardMarkup(
         keyboard=[
-            [KeyboardButton(text="📊 Статы"),       KeyboardButton(text="🎯 Квесты")],
-            [KeyboardButton(text="🏆 Лидеры"),      KeyboardButton(text="🎖 Достижения")],
-            [KeyboardButton(text="👤 Профиль"),     KeyboardButton(text="⚔️ Босс недели")],
-            [KeyboardButton(text="🛒 Магазин"),     KeyboardButton(text="🎒 Инвентарь")],
+            [KeyboardButton(text="📊 Статы"),      KeyboardButton(text="🎯 Квесты")],
+            [KeyboardButton(text="🏆 Лидеры"),     KeyboardButton(text="🎖 Достижения")],
+            [KeyboardButton(text="👤 Профиль"),    KeyboardButton(text="⚔️ Босс недели")],
+            [KeyboardButton(text="🛒 Магазин"),    KeyboardButton(text="🎒 Инвентарь")],
             [KeyboardButton(text="⚙️ Настройки")],
         ],
         resize_keyboard=True
@@ -696,15 +704,16 @@ def categories_kb():
     buttons.append([InlineKeyboardButton(text="✏️ Мои квесты", callback_data="cat_custom")])
     return InlineKeyboardMarkup(inline_keyboard=buttons)
 
-def quests_kb(category: str, done_quests: list):
+def quests_kb(category: str, done_quests: list, renames: dict):
     buttons = []
     for qid, q in QUESTS.items():
         if q["stat"] == category:
+            display_name = renames.get(qid, q["name"])
             if qid in done_quests:
-                label = f"✅ {q['name']}"
+                label = f"✅ {display_name}"
                 cb = f"done_{qid}"
             else:
-                label = f"{q['name']} +{q['xp']}XP"
+                label = f"{display_name} +{q['xp']}XP"
                 cb = f"quest_{qid}"
             buttons.append([InlineKeyboardButton(text=label, callback_data=cb)])
     buttons.append([InlineKeyboardButton(text="◀️ Назад", callback_data="back_categories")])
@@ -715,6 +724,14 @@ def class_kb():
         [InlineKeyboardButton(text="⚔️ Воин (+Сила)",        callback_data="class_warrior")],
         [InlineKeyboardButton(text="🧙 Маг (+Интеллект)",    callback_data="class_mage")],
         [InlineKeyboardButton(text="💼 Торговец (+Финансы)", callback_data="class_trader")],
+    ])
+
+def difficulty_kb(quest_name: str):
+    return InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="🟢 Лёгкая (+2 XP)",  callback_data=f"addq_easy_{quest_name}")],
+        [InlineKeyboardButton(text="🟡 Средняя (+5 XP)", callback_data=f"addq_medium_{quest_name}")],
+        [InlineKeyboardButton(text="🔴 Сложная (+10 XP)", callback_data=f"addq_hard_{quest_name}")],
+        [InlineKeyboardButton(text="❌ Отмена",           callback_data="addq_cancel")],
     ])
 
 # ══════════════════════════════════════════
@@ -780,18 +797,21 @@ async def show_today(msg: types.Message):
     custom = await get_custom_quests(msg.from_user.id)
     today = date.today().isoformat()
     custom_done = [q for q in custom if q["last_done"] == today]
+    renames = await get_quest_renames(msg.from_user.id)
     if not done and not custom_done:
         await msg.answer("📋 Сегодня ещё ничего не выполнено. Жми 🎯 Квесты!")
         return
     total_xp = sum(QUESTS[qid]["xp"] for qid in done if qid in QUESTS)
-    total_xp += len(custom_done) * 2
+    total_xp += sum(DIFFICULTY[q.get("difficulty","easy")]["xp"] for q in custom_done)
     text = "📋 *Сегодня выполнено:*\n\n"
     for qid in done:
         if qid in QUESTS:
             q = QUESTS[qid]
-            text += f"✅ {q['name']} +{q['xp']}XP\n"
+            name = renames.get(qid, q["name"])
+            text += f"✅ {name} +{q['xp']}XP\n"
     for q in custom_done:
-        text += f"✅ ✏️ {q['name']} +2XP\n"
+        diff = DIFFICULTY[q.get("difficulty","easy")]
+        text += f"✅ ✏️ {q['name']} +{diff['xp']}XP\n"
     text += f"\n⚡ Итого: {total_xp} XP"
     await msg.answer(text, parse_mode="Markdown")
 
@@ -852,7 +872,7 @@ async def show_category(call: types.CallbackQuery):
         today = date.today().isoformat()
         if not quests:
             await call.message.edit_text(
-                "✏️ *Мои квесты*\n\nУ тебя ещё нет своих квестов.\n\nДобавь через ⚙️ Настройки",
+                "✏️ *Мои квесты*\n\nПока пусто.\nДобавь через ⚙️ Настройки",
                 parse_mode="Markdown",
                 reply_markup=InlineKeyboardMarkup(inline_keyboard=[
                     [InlineKeyboardButton(text="◀️ Назад", callback_data="back_categories")]
@@ -862,20 +882,22 @@ async def show_category(call: types.CallbackQuery):
         buttons = []
         for q in quests:
             done = q["last_done"] == today
-            label = f"✅ {q['name']}" if done else f"✏️ {q['name']} +2XP"
-            cb = f"customdone_{q['id']}" if not done else f"alreadydone_custom"
+            diff = DIFFICULTY[q.get("difficulty","easy")]
+            label = f"✅ {q['name']}" if done else f"{diff['name']} {q['name']} +{diff['xp']}XP"
+            cb = f"alreadydone_custom" if done else f"customdone_{q['id']}"
             buttons.append([InlineKeyboardButton(text=label, callback_data=cb)])
         buttons.append([InlineKeyboardButton(text="◀️ Назад", callback_data="back_categories")])
         await call.message.edit_text(
-            "✏️ *Мои квесты* (+2 XP за каждый)\n\n✅ — уже выполнено сегодня",
+            "✏️ *Мои квесты*\n\n✅ — уже выполнено сегодня",
             parse_mode="Markdown",
             reply_markup=InlineKeyboardMarkup(inline_keyboard=buttons)
         )
         return
     done = await get_today_quests(call.from_user.id)
+    renames = await get_quest_renames(call.from_user.id)
     await call.message.edit_text(
         f"{CATEGORIES[category]}\n\n✅ — уже выполнено сегодня",
-        reply_markup=quests_kb(category, done)
+        reply_markup=quests_kb(category, done, renames)
     )
 
 @dp.callback_query(F.data == "back_categories")
@@ -890,13 +912,13 @@ async def complete_quest(call: types.CallbackQuery):
         await call.answer("⚠️ Уже выполнено сегодня!", show_alert=True)
         return
     q = QUESTS[quest_id]
+    renames = await get_quest_renames(user_id)
+    display_name = renames.get(quest_id, q["name"])
     user = await get_user(user_id)
     user, streak_msg, level_up_msg, earned, coins_earned = await award_xp(
         user, q["xp"], q["stat"], q["stat_val"]
     )
     await mark_quest_done(user_id, quest_id)
-
-    # Прогресс босса
     boss = await get_current_boss()
     boss_msg = ""
     if boss:
@@ -911,22 +933,19 @@ async def complete_quest(call: types.CallbackQuery):
                     user["xp"] += boss["xp"]
                     user["coins"] = user.get("coins",0) + 50
                     await save_user(user)
-                    boss_msg = f"\n\n⚔️ *БОСС ПОВЕРЖЕН!* +{boss['xp']} XP +50🟡 🏆"
+                    boss_msg = f"\n\n⚔️ *БОСС ПОВЕРЖЕН!* +{boss['xp']} XP +50💛 🏆"
                 else:
                     boss_msg = f"\n⚔️ Босс: {new_count}/{boss['target']}"
-
     new_achs = await check_achievements(user_id, user)
     ach_msg = ("\n\n🎖 *Новые достижения:*\n" + "\n".join(new_achs)) if new_achs else ""
-
     response = (
-        f"{q['emoji']} *Квест выполнен!*\n\n"
+        f"{q['emoji']} *{display_name}*\n\n"
         f"{streak_msg}"
-        f"⚡ +{earned} XP  🟡 +{coins_earned} монет"
+        f"⚡ +{earned} XP  💛 +{coins_earned} монет"
     )
     if q["stat_val"] > 0:
         response += f"  {STAT_NAMES[q['stat']]} +{q['stat_val']}"
     response += level_up_msg + boss_msg + ach_msg
-
     await call.answer()
     await animated_xp(call.message, response)
 
@@ -936,15 +955,22 @@ async def complete_custom_quest(call: types.CallbackQuery):
     if await is_custom_quest_done_today(quest_id):
         await call.answer("⚠️ Уже выполнено сегодня!", show_alert=True)
         return
+    async with aiosqlite.connect(DB_PATH) as db:
+        async with db.execute("SELECT difficulty FROM custom_quests WHERE id=?", (quest_id,)) as cur:
+            row = await cur.fetchone()
+    difficulty = row[0] if row else "easy"
+    diff = DIFFICULTY[difficulty]
     user = await get_user(call.from_user.id)
-    user, streak_msg, level_up_msg, earned, coins_earned = await award_xp(user, 2, "intel", 0)
+    user, streak_msg, level_up_msg, earned, coins_earned = await award_xp(user, diff["xp"], "intel", 0)
+    user["coins"] = user.get("coins",0) + diff["coins"] - 1
+    await save_user(user)
     await mark_custom_quest_done(quest_id)
     new_achs = await check_achievements(call.from_user.id, user)
     ach_msg = ("\n\n🎖 *Новые достижения:*\n" + "\n".join(new_achs)) if new_achs else ""
     response = (
         f"✏️ *Квест выполнен!*\n\n"
         f"{streak_msg}"
-        f"⚡ +{earned} XP  🟡 +{coins_earned} монет"
+        f"⚡ +{earned} XP  💛 +{diff['coins']} монет"
         + level_up_msg + ach_msg
     )
     await call.answer()
@@ -1015,7 +1041,7 @@ async def show_boss(msg: types.Message):
     await msg.answer(
         f"⚔️ *{boss['name']}*\n\n"
         f"📋 {boss['desc']}\n"
-        f"🏆 Награда: +{boss['xp']} XP + 50🟡\n\n"
+        f"🏆 Награда: +{boss['xp']} XP + 50💛\n\n"
         f"Прогресс: [{bar}] {status}",
         parse_mode="Markdown"
     )
@@ -1026,15 +1052,15 @@ async def show_boss(msg: types.Message):
 async def shop(msg: types.Message):
     user = await get_user(msg.from_user.id)
     shop_items = await get_daily_shop()
-    text = f"🛒 *Магазин* (обновляется каждый день)\n\n🟡 У тебя: {user.get('coins',0)} монет\n\n"
+    text = f"🛒 *Магазин* (обновляется каждый день)\n\n💛 У тебя: {user.get('coins',0)} монет\n\n"
     buttons = []
     for item_id in shop_items:
         item = ITEMS.get(item_id)
         if not item:
             continue
         can_buy = user.get("coins",0) >= item["price"]
-        text += f"{item['name']}\n_{item['desc']}_ — {item['price']}🟡\n\n"
-        label = f"Купить {item['name']} ({item['price']}🟡)" if can_buy else f"❌ {item['name']} ({item['price']}🟡)"
+        text += f"{item['name']}\n_{item['desc']}_ — {item['price']}💛\n\n"
+        label = f"Купить {item['name']} ({item['price']}💛)" if can_buy else f"❌ {item['name']} ({item['price']}💛)"
         buttons.append([InlineKeyboardButton(text=label, callback_data=f"buy_{item_id}")])
     await msg.answer(text, parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(inline_keyboard=buttons))
 
@@ -1048,7 +1074,7 @@ async def buy_item(call: types.CallbackQuery):
     user = await get_user(call.from_user.id)
     if user.get("coins",0) < item["price"]:
         need = item["price"] - user.get("coins",0)
-        await call.answer(f"❌ Не хватает {need}🟡", show_alert=True)
+        await call.answer(f"❌ Не хватает {need}💛", show_alert=True)
         return
     user["coins"] -= item["price"]
     user["total_buys"] = user.get("total_buys",0) + 1
@@ -1059,7 +1085,7 @@ async def buy_item(call: types.CallbackQuery):
     await call.answer("✅ Куплено!", show_alert=True)
     await call.message.answer(
         f"🎉 Куплено: *{item['name']}*\n"
-        f"🟡 Осталось монет: {user.get('coins',0)}\n"
+        f"💛 Осталось: {user.get('coins',0)} монет\n"
         f"Используй в 🎒 Инвентарь{ach_msg}",
         parse_mode="Markdown"
     )
@@ -1106,7 +1132,7 @@ async def use_item(call: types.CallbackQuery):
         result_msg = "💎 +50 XP получено!"
     elif item["type"] == "coins":
         user["coins"] = user.get("coins",0) + 15
-        result_msg = "🟡 +15 монет получено!"
+        result_msg = "💛 +15 монет получено!"
     elif item["type"] == "stat_all":
         for s in ["intel","strength","agility","finance","health"]:
             user[s] += 1
@@ -1116,54 +1142,175 @@ async def use_item(call: types.CallbackQuery):
     await call.answer("✅ Использовано!", show_alert=True)
     await call.message.answer(f"✅ *{item['name']}* использован!\n{result_msg}", parse_mode="Markdown")
 
-# ── Настройки / Свои квесты ───────────────
+# ── Настройки ─────────────────────────────
 
 @dp.message(F.text == "⚙️ Настройки")
 async def show_settings(msg: types.Message):
-    quests = await get_custom_quests(msg.from_user.id)
-    text = "⚙️ *Настройки*\n\n"
-    text += "✏️ *Мои квесты* (+2 XP каждый, 1 раз в день)\n\n"
+    buttons = [
+        [InlineKeyboardButton(text="✏️ Мои квесты",         callback_data="settings_myquests")],
+        [InlineKeyboardButton(text="🔄 Переименовать квест", callback_data="settings_rename")],
+    ]
+    await msg.answer(
+        "⚙️ *Настройки*\n\nВыбери что хочешь настроить:",
+        parse_mode="Markdown",
+        reply_markup=InlineKeyboardMarkup(inline_keyboard=buttons)
+    )
+
+# ── Мои квесты ────────────────────────────
+
+@dp.callback_query(F.data == "settings_myquests")
+async def settings_myquests(call: types.CallbackQuery):
+    quests = await get_custom_quests(call.from_user.id)
+    text = "✏️ *Мои квесты*\n\n"
     buttons = []
     if quests:
         for q in quests:
-            text += f"• {q['name']}\n"
+            diff = DIFFICULTY[q.get("difficulty","easy")]
+            text += f"{diff['name']} {q['name']} (+{diff['xp']} XP)\n"
             buttons.append([InlineKeyboardButton(
                 text=f"🗑 Удалить: {q['name']}",
                 callback_data=f"delquest_{q['id']}"
             )])
     else:
         text += "_Нет своих квестов_\n"
-    text += "\nДобавить квест: напиши `/addquest Название квеста`"
-    buttons.append([InlineKeyboardButton(
-        text="📝 Как добавить?",
-        callback_data="addquest_help"
-    )])
-    await msg.answer(text, parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(inline_keyboard=buttons))
+    text += "\nДобавить: напиши `/addquest Название`"
+    buttons.append([InlineKeyboardButton(text="◀️ Назад", callback_data="settings_back")])
+    await call.message.edit_text(text, parse_mode="Markdown",
+                                  reply_markup=InlineKeyboardMarkup(inline_keyboard=buttons))
+
+@dp.callback_query(F.data == "settings_back")
+async def settings_back(call: types.CallbackQuery):
+    buttons = [
+        [InlineKeyboardButton(text="✏️ Мои квесты",         callback_data="settings_myquests")],
+        [InlineKeyboardButton(text="🔄 Переименовать квест", callback_data="settings_rename")],
+    ]
+    await call.message.edit_text(
+        "⚙️ *Настройки*\n\nВыбери что хочешь настроить:",
+        parse_mode="Markdown",
+        reply_markup=InlineKeyboardMarkup(inline_keyboard=buttons)
+    )
 
 @dp.message(Command("addquest"))
 async def add_quest_cmd(msg: types.Message):
     parts = msg.text.split(maxsplit=1)
     if len(parts) < 2:
-        await msg.answer("Напиши: `/addquest Название квеста`\n\nНапример: `/addquest Прогулка 30 минут`", parse_mode="Markdown")
+        await msg.answer("Напиши: `/addquest Название квеста`", parse_mode="Markdown")
         return
     name = parts[1][:50]
     quests = await get_custom_quests(msg.from_user.id)
     if len(quests) >= 10:
         await msg.answer("❌ Максимум 10 своих квестов!")
         return
-    await add_custom_quest(msg.from_user.id, name)
-    await msg.answer(f"✅ Квест добавлен: *{name}*\n\nНайдёшь в 🎯 Квесты → ✏️ Мои квесты", parse_mode="Markdown")
+    await msg.answer(
+        f"Выбери сложность для квеста *{name}*:",
+        parse_mode="Markdown",
+        reply_markup=difficulty_kb(name)
+    )
+
+@dp.callback_query(F.data.startswith("addq_"))
+async def addq_difficulty(call: types.CallbackQuery):
+    if call.data == "addq_cancel":
+        await call.message.edit_text("❌ Отменено")
+        return
+    parts = call.data.split("_", 2)
+    difficulty = parts[1]
+    name = parts[2]
+    quests = await get_custom_quests(call.from_user.id)
+    if len(quests) >= 10:
+        await call.answer("❌ Максимум 10 квестов!", show_alert=True)
+        return
+    await add_custom_quest(call.from_user.id, name, difficulty)
+    diff = DIFFICULTY[difficulty]
+    await call.message.edit_text(
+        f"✅ Квест добавлен!\n\n{diff['name']} *{name}* (+{diff['xp']} XP)\n\nНайдёшь в 🎯 Квесты → ✏️ Мои квесты",
+        parse_mode="Markdown"
+    )
 
 @dp.callback_query(F.data.startswith("delquest_"))
 async def delete_quest(call: types.CallbackQuery):
     quest_id = int(call.data.replace("delquest_", ""))
     await delete_custom_quest(quest_id, call.from_user.id)
     await call.answer("✅ Квест удалён", show_alert=True)
-    await show_settings(call.message)
+    await settings_myquests(call)
 
-@dp.callback_query(F.data == "addquest_help")
-async def addquest_help(call: types.CallbackQuery):
-    await call.answer("Напиши: /addquest Название квеста", show_alert=True)
+# ── Переименование квестов ────────────────
+
+@dp.callback_query(F.data == "settings_rename")
+async def settings_rename(call: types.CallbackQuery):
+    renames = await get_quest_renames(call.from_user.id)
+    buttons = []
+    for cat_id, cat_name in CATEGORIES.items():
+        buttons.append([InlineKeyboardButton(text=cat_name, callback_data=f"rename_cat_{cat_id}")])
+    if renames:
+        buttons.append([InlineKeyboardButton(text="🗑 Сбросить все переименования", callback_data="rename_reset_all")])
+    buttons.append([InlineKeyboardButton(text="◀️ Назад", callback_data="settings_back")])
+    text = "🔄 *Переименование квестов*\n\nВыбери категорию:"
+    if renames:
+        text += "\n\n*Твои переименования:*\n"
+        for qid, qname in renames.items():
+            orig = QUESTS.get(qid, {}).get("name","")
+            text += f"• {orig} → {qname}\n"
+    await call.message.edit_text(text, parse_mode="Markdown",
+                                  reply_markup=InlineKeyboardMarkup(inline_keyboard=buttons))
+
+@dp.callback_query(F.data.startswith("rename_cat_"))
+async def rename_category(call: types.CallbackQuery):
+    category = call.data.replace("rename_cat_", "")
+    renames = await get_quest_renames(call.from_user.id)
+    buttons = []
+    for qid, q in QUESTS.items():
+        if q["stat"] == category:
+            current_name = renames.get(qid, q["name"])
+            buttons.append([InlineKeyboardButton(
+                text=f"✏️ {current_name}",
+                callback_data=f"rename_quest_{qid}"
+            )])
+    buttons.append([InlineKeyboardButton(text="◀️ Назад", callback_data="settings_rename")])
+    await call.message.edit_text(
+        f"✏️ *{CATEGORIES[category]}*\n\nВыбери квест для переименования:",
+        parse_mode="Markdown",
+        reply_markup=InlineKeyboardMarkup(inline_keyboard=buttons)
+    )
+
+# Хранилище ожидающих переименований
+pending_renames = {}
+
+@dp.callback_query(F.data.startswith("rename_quest_"))
+async def rename_quest_select(call: types.CallbackQuery):
+    quest_id = call.data.replace("rename_quest_", "")
+    q = QUESTS.get(quest_id)
+    if not q:
+        await call.answer("Квест не найден", show_alert=True)
+        return
+    pending_renames[call.from_user.id] = quest_id
+    await call.message.edit_text(
+        f"✏️ Переименовываем: *{q['name']}*\n\nНапиши новое название в чат:\n_(или напиши 'отмена')_",
+        parse_mode="Markdown"
+    )
+
+@dp.callback_query(F.data == "rename_reset_all")
+async def rename_reset_all(call: types.CallbackQuery):
+    async with aiosqlite.connect(DB_PATH) as db:
+        await db.execute("DELETE FROM quest_renames WHERE user_id=?", (call.from_user.id,))
+        await db.commit()
+    await call.answer("✅ Все переименования сброшены", show_alert=True)
+    await settings_rename(call)
+
+@dp.message(F.text & ~F.text.startswith("/"))
+async def handle_rename_input(msg: types.Message):
+    user_id = msg.from_user.id
+    if user_id in pending_renames:
+        quest_id = pending_renames.pop(user_id)
+        if msg.text.lower() == "отмена":
+            await msg.answer("❌ Переименование отменено")
+            return
+        new_name = msg.text[:50]
+        await set_quest_rename(user_id, quest_id, new_name)
+        orig = QUESTS.get(quest_id, {}).get("name","")
+        await msg.answer(
+            f"✅ Квест переименован!\n\n*{orig}* → *{new_name}*",
+            parse_mode="Markdown"
+        )
 
 # ══════════════════════════════════════════
 # ⏰ ПЛАНИРОВЩИК
@@ -1216,7 +1363,7 @@ async def send_weekly_boss():
         try:
             await bot.send_message(uid,
                 f"⚔️ *Новый босс недели!*\n\n*{boss['name']}*\n{boss['desc']}\n\n"
-                f"🏆 Награда: +{boss['xp']} XP + 50🟡\n\nНажми ⚔️ Босс недели!",
+                f"🏆 Награда: +{boss['xp']} XP + 50💛\n\nНажми ⚔️ Босс недели!",
                 parse_mode="Markdown")
         except Exception:
             pass
